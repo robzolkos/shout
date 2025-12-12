@@ -6,8 +6,7 @@ pkgdesc="Lightweight speech-to-text for Wayland/Hyprland, optimized for AI codin
 arch=('any')
 url="https://github.com/robzolkos/shout"
 license=('MIT')
-depends=('whisper.cpp' 'wtype' 'pipewire' 'libnotify')
-optdepends=('whisper.cpp-model-tiny: recommended speech model')
+depends=('whisper.cpp' 'whisper.cpp-model-tiny' 'wtype' 'pipewire' 'libnotify')
 source=("$pkgname-$pkgver.tar.gz::$url/archive/v$pkgver.tar.gz")
 sha256sums=('SKIP')
 

@@ -10,22 +10,29 @@ https://github.com/user-attachments/assets/3197004d-1f44-4433-872e-b5c14b28bda2
 
 
 
-## Installation (Omarchy/Arch Linux)
+## Installation (Arch Linux / AUR)
 
 ```bash
-yay -S whisper.cpp whisper.cpp-model-tiny wtype
-git clone https://github.com/robzolkos/shout.git
-cd shout
-./install.sh
+yay -S shout
 ```
 
 Uses the `tiny` whisper model (75 MB) - fastest transcription, good enough for AI agents.
+
+## Setup
+
+Add this keybind to `~/.config/hypr/hyprland.conf`:
+
+```bash
+bindd = SUPER, R, shout, exec, shout
+```
+
+Then reload: `hyprctl reload`
 
 ## Usage
 
 1. Press `Super+R` to start recording
 2. Speak
-3. Press `Super+R` again to stop, transcribe, and press Enter
+3. Press `Super+R` again to stop, transcribe, and type the text
 
 ## License
 
