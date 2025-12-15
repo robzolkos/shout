@@ -49,6 +49,22 @@ Then reload: `hyprctl reload`
 2. Speak
 3. Press `Super+R` again to stop, transcribe, and type the text
 
+## Troubleshooting
+
+### File conflicts with libggml-git
+
+If you see errors like `libggml-git: /usr/include/ggml.h exists in filesystem (owned by whisper.cpp)`:
+
+```bash
+# Remove old whisper.cpp that bundles ggml
+yay -Rns whisper.cpp
+
+# Fresh install
+yay -S shout
+```
+
+This happens when upgrading from an older whisper.cpp that bundled ggml internally.
+
 ## License
 
 MIT
