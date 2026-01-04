@@ -12,21 +12,6 @@ https://github.com/user-attachments/assets/3197004d-1f44-4433-872e-b5c14b28bda2
 
 ## Installation (Arch Linux / AUR)
 
-**Prerequisite:** A Vulkan driver for your GPU (install one):
-```bash
-# AMD (often pre-installed)
-sudo pacman -S vulkan-radeon
-
-# Intel
-sudo pacman -S vulkan-intel
-
-# NVIDIA (usually comes with nvidia drivers)
-sudo pacman -S nvidia-utils
-
-# No GPU / fallback (slower)
-sudo pacman -S vulkan-swrast
-```
-
 ```bash
 yay -S shout
 ```
@@ -48,22 +33,6 @@ Then reload: `hyprctl reload`
 1. Press `Super+R` to start recording
 2. Speak
 3. Press `Super+R` again to stop, transcribe, and type the text
-
-## Troubleshooting
-
-### File conflicts with libggml-git
-
-If you see errors like `libggml-git: /usr/include/ggml.h exists in filesystem (owned by whisper.cpp)`:
-
-```bash
-# Remove old whisper.cpp that bundles ggml
-yay -Rns whisper.cpp
-
-# Fresh install
-yay -S shout
-```
-
-This happens when upgrading from an older whisper.cpp that bundled ggml internally.
 
 ## License
 

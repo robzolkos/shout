@@ -5,35 +5,29 @@
 # Press keybind once to start recording, again to stop and transcribe.
 # Text is automatically typed into the focused application.
 
-STATE_FILE="/tmp/shout.pid"
-AUDIO_FILE="/tmp/shout.wav"
+STATE_DIR="${XDG_RUNTIME_DIR:-/tmp}"
+STATE_FILE="$STATE_DIR/shout.pid"
+AUDIO_FILE="$STATE_DIR/shout.wav"
 
-# Find whisper-cli: check PATH, then common locations
-if command -v whisper-cli &>/dev/null; then
-    WHISPER_CLI="whisper-cli"
-elif [[ -x "$HOME/.local/bin/whisper-cli" ]]; then
-    WHISPER_CLI="$HOME/.local/bin/whisper-cli"
-elif [[ -x "/usr/local/bin/whisper-cli" ]]; then
-    WHISPER_CLI="/usr/local/bin/whisper-cli"
-else
-    notify-send -t 3000 "shout" "Error: whisper-cli not found"
-    exit 1
-fi
+WHISPER_CLI="whisper-cli"
+WHISPER_MODEL="/usr/share/whisper.cpp-model-tiny.en/ggml-tiny.en.bin"
 
-# Find model: check common locations (AUR package, then manual installs)
-if [[ -f "/usr/share/whisper.cpp-model-tiny/ggml-tiny.bin" ]]; then
-    WHISPER_MODEL="/usr/share/whisper.cpp-model-tiny/ggml-tiny.bin"
-elif [[ -f "$HOME/.local/share/whisper/models/ggml-tiny.bin" ]]; then
-    WHISPER_MODEL="$HOME/.local/share/whisper/models/ggml-tiny.bin"
-else
-    notify-send -t 3000 "shout" "Error: whisper model not found"
-    exit 1
-fi
-
+recording="false"
 if [[ -f "$STATE_FILE" ]]; then
+    pid="$(<"$STATE_FILE")"
+    if [[ "$pid" =~ ^[0-9]+$ ]] && kill -0 "$pid" 2>/dev/null; then
+        if [[ "$(ps -p "$pid" -o comm=)" == "pw-record" ]]; then
+            recording="true"
+        fi
+    else
+        rm -f "$STATE_FILE"
+    fi
+fi
+
+if [[ "$recording" == "true" ]]; then
     # Stop recording
-    kill "$(cat "$STATE_FILE")" 2>/dev/null
-    rm "$STATE_FILE"
+    kill -- "$pid" 2>/dev/null
+    rm -f "$STATE_FILE"
 
     notify-send -t 1000 -h string:x-canonical-private-synchronous:shout "shout" "Processing..."
 
@@ -51,7 +45,7 @@ if [[ -f "$STATE_FILE" ]]; then
     rm -f "$AUDIO_FILE"
 else
     # Start recording
-    notify-send -t 0 -h string:x-canonical-private-synchronous:shout "shout" "Recording..."
+    notify-send -t 0 -h string:x-canonical-private-synchronous:shout "shout" "Listening..."
     pw-record --rate=16000 --channels=1 --format=s16 "$AUDIO_FILE" &
-    echo $! > "$STATE_FILE"
+    printf '%s\n' "$!" > "$STATE_FILE"
 fi
