@@ -8,27 +8,8 @@
 STATE_FILE="/tmp/shout.pid"
 AUDIO_FILE="/tmp/shout.wav"
 
-# Find whisper-cli: check PATH, then common locations
-if command -v whisper-cli &>/dev/null; then
-    WHISPER_CLI="whisper-cli"
-elif [[ -x "$HOME/.local/bin/whisper-cli" ]]; then
-    WHISPER_CLI="$HOME/.local/bin/whisper-cli"
-elif [[ -x "/usr/local/bin/whisper-cli" ]]; then
-    WHISPER_CLI="/usr/local/bin/whisper-cli"
-else
-    notify-send -t 3000 "shout" "Error: whisper-cli not found"
-    exit 1
-fi
-
-# Find model: check common locations (AUR package, then manual installs)
-if [[ -f "/usr/share/whisper.cpp-model-tiny/ggml-tiny.bin" ]]; then
-    WHISPER_MODEL="/usr/share/whisper.cpp-model-tiny/ggml-tiny.bin"
-elif [[ -f "$HOME/.local/share/whisper/models/ggml-tiny.bin" ]]; then
-    WHISPER_MODEL="$HOME/.local/share/whisper/models/ggml-tiny.bin"
-else
-    notify-send -t 3000 "shout" "Error: whisper model not found"
-    exit 1
-fi
+WHISPER_CLI="whisper-cli"
+WHISPER_MODEL="/usr/share/whisper.cpp-model-tiny.en/ggml-tiny.en.bin"
 
 if [[ -f "$STATE_FILE" ]]; then
     # Stop recording
