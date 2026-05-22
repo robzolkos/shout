@@ -23,7 +23,7 @@ Uses the `tiny` whisper model (75 MB) - fastest transcription, good enough for A
 Add this keybind to `~/.config/hypr/hyprland.conf`:
 
 ```bash
-bindd = SUPER, R, shout, exec, shout
+bindd = SUPER, R, shout-stt, exec, shout-stt
 ```
 
 Then reload: `hyprctl reload`

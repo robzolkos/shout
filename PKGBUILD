@@ -12,7 +12,7 @@ sha256sums=('SKIP')
 
 package() {
     cd "$srcdir/$pkgname-$pkgver"
-    install -Dm755 shout "$pkgdir/usr/bin/shout"
+    install -Dm755 shout-stt "$pkgdir/usr/bin/shout-stt"
     install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
     install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
 }
